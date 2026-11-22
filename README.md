@@ -46,6 +46,29 @@ npm run dev
 前端默认监听 `http://127.0.0.1:5173/`，dev server 不会自动打开浏览器，
 需要自己访问。`/api` 由 vite 代理到后端 `http://127.0.0.1:8000`。
 
+
+## 分区级重试与复算快照
+
+特征计算任务的重试不再把整项任务打回草稿，而是按「计算定义 + 输入版本 + 日期 + 分区」
+定位缺口：
+
+- `POST /api/feature_compute/runs`：登记一次实际运行（分区清单、输入版本、日期、初始完成/失败）。
+- `POST /api/feature_compute/retry`：值班员勾选失败分区一次提交，回执逐条列出「补算」或「复用」；
+  同一定义、输入版本和日期下已确认的分区直接复用，不再重复计算。
+- `POST /api/feature_compute/{task_id}/receipts`：完成回执按运行实际登记的版本归属，
+  重复回执只计一次，晚到回执仍归入实际运行的版本。
+- `POST /api/feature_snapshot/recompute`：生成复算快照，只统计已确认且可读的产物，
+  未完成的日期单独列在 `pending_partitions` 里继续补片。
+- `GET /api/feature_snapshot/{id}/recompute-detail`：给出快照的确切行数、日期与逐分区可读产物。
+- `POST /api/feature_snapshot/{id}/patch-task`：从快照生成补片任务；`POST /api/feature_compute/{id}/patch-execute`
+  在回执到达后才真正读取快照产物，并核对行数与校验和。
+
+产物按 `outputs/<定义>/<日期>/<输入版本>/<分区>/task_<id>.parquet` 落盘，
+同一天的 v1 与 v2 不会互相覆盖，因此从 v1 快照补片读到的仍是 v1 的输出。
+
+前端：特征计算任务页的「分区重试与复算」面板支持勾选分区提交并展示受理回执；
+特征快照页的「复算快照与补片」面板支持按任务/版本生成快照、查看逐分区产物并执行补片。
+
 ## 业务模块
 
 | 模块 | 目录 | 业务对象 | 主要字段 |

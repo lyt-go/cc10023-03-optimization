@@ -86,6 +86,9 @@
       </form>
     </div>
 
+    <PartitionRetryPanel v-if="meta.key === 'feature_compute'" />
+    <RecomputeSnapshotPanel v-if="meta.key === 'feature_snapshot'" />
+
     <footer class="page-foot">
       <span>共 {{ total }} 条{{ meta.name }}记录</span>
       <span v-if="errorMessage" class="error-text">{{ errorMessage }}</span>
@@ -103,6 +106,8 @@ import {
   moduleMeta,
   runAction as applyAction,
 } from '@/api/backend-service'
+import PartitionRetryPanel from '@/views/compute/PartitionRetryPanel.vue'
+import RecomputeSnapshotPanel from '@/views/compute/RecomputeSnapshotPanel.vue'
 import type { EntryRow } from '@/data/types'
 
 const props = defineProps<{ moduleKey: string }>()

@@ -70,3 +70,15 @@ body { margin: 0; background: #f6f8fb; color: #1f2937; }
 .analysis-chart { display: flex; align-items: flex-end; gap: 8px; height: 160px; padding: 12px 0; }
 .analysis-bar { flex: 1; border-radius: 4px 4px 0 0; background: var(--brand); min-width: 24px; position: relative; transition: height 0.4s; }
 .analysis-bar span { position: absolute; bottom: -20px; left: 50%; transform: translateX(-50%); font-size: 10px; color: var(--muted); white-space: nowrap; }
+/* 分区重试与复算快照 */
+.partition-panel { background: #fff; border: 1px solid var(--border); border-radius: 8px; padding: 14px 16px; margin: 16px 0; }
+.partition-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; }
+.partition-head h3 { margin: 0; font-size: 15px; }
+.partition-meta { display: flex; flex-wrap: wrap; gap: 14px; font-size: 12px; color: var(--muted); margin: 10px 0; }
+.task-input { width: 140px; border: 1px solid var(--border); border-radius: 6px; padding: 6px 10px; font-size: 13px; }
+.path-cell { font-family: monospace; font-size: 12px; color: #334155; word-break: break-all; }
+.retry-receipt { margin-top: 12px; border-top: 1px solid var(--border); padding-top: 10px; }
+.retry-receipt h4 { margin: 0 0 6px; font-size: 14px; }
+.retry-receipt small { color: var(--muted); font-weight: normal; }
+.snapshot-detail { margin-top: 14px; border-top: 1px solid var(--border); padding-top: 10px; }
+.snapshot-detail h4 { margin: 0 0 8px; font-size: 14px; }
